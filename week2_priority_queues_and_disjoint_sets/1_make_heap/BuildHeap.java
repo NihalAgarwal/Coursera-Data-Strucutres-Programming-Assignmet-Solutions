@@ -53,27 +53,31 @@ public class BuildHeap {
 
     private void generateSwaps() {
         swaps = new ArrayList<Swap>();
-        int p, temp;
-        int a  = Integer.MAX_VALUE;
-        int b  = Integer.MAX_VALUE;
-//        System.out.println(Arrays.toString(data));
-        for(int i=data.length-1; i>=0; i--){
-            temp = i;
-            p = getParentIndex(i);
-            while(p >= 0 && data[p] > data[temp]){
-                swap(temp,p);
-                swaps.add(new Swap(p,temp));
-                temp = p;
-                p = getParentIndex(temp);
-//                b -=1;
-            }
-//            if(a == b){
-//                break;
-//            }
-//            a = b;
-//            System.out.println(Arrays.toString(data));
+        for(int i=data.length/2; i>=0; i--){
+            heapifyDown(i);
         }
     }
+
+    private void heapifyDown(int i) {
+
+        int l = getLeftIndex(i);
+        int r = getRightIndex(i);
+        int min = i;
+
+        if(l < data.length && data[l] < data[min]){
+            min = l;
+        }
+        if(r < data.length && data[r] < data[min]){
+            min = r;
+        }
+
+        if (i != min){
+            swap(i, min);
+            swaps.add(new Swap(i, min));
+            heapifyDown(min);
+        }
+    }
+
 
     public void solve() throws IOException {
         in = new FastScanner();
